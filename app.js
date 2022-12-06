@@ -11,6 +11,8 @@ import passport from 'passport'
 import passportLocalMongoose from 'passport-local-mongoose'
 import GoogleStrategy from 'passport-google-oauth20'
 import findOrCreate from 'mongoose-findorcreate'
+import https from 'https' //for 'fetch user profile' error
+https.globalAgent.options.rejectUnauthorized = false; //for 'fetch user profile' error
 const saltRounds = 10;
 const app = express();
 
