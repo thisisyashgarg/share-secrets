@@ -5,16 +5,18 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 // import encrypt from "mongoose-encryption";  //level 2 encryption
 // import md5 from 'md5'
-import bcrypt from 'bcrypt'
+import ejs from 'ejs'
+// import bcrypt from 'bcrypt'
 import session from 'express-session'
 import passport from 'passport'
 import passportLocalMongoose from 'passport-local-mongoose'
-import GoogleStrategy from 'passport-google-oauth20'
+import {Strategy as GoogleStrategy} from 'passport-google-oauth20'
 import findOrCreate from 'mongoose-findorcreate'
 const saltRounds = 10;
 const app = express();
 
 app.use(express.static('public')); // for rendering dynamic pages
+app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended: true})); //to get body of data that is entered and tap into it 
 app.use(session({
     secret: "mySecret",
@@ -34,12 +36,16 @@ mongoose.connect(`mongodb+srv://yashgarg:${process.env.PASSWORD}@cluster0.fhdwxo
 });
 
 //defining user schema
-const userSchema = new mongoose.Schema ({
-    email: String,
+const userSchema = new mongoose.Schema (
+    {email: String,
     password: String,
     googleId: String,
-    secret: String
-});
+    secret: String},
+    {timestamps: {
+        createdAt: 'created_at', // Use `created_at` to store the created date
+        updatedAt: 'updated_at' // and `updated_at` to store the last updated date
+    }}
+);
 
 //for passport local mongoose
 userSchema.plugin(passportLocalMongoose);
@@ -151,6 +157,7 @@ app.route('/login')
          })
       })
 });
+///////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////
 app.route('/register')
