@@ -3,17 +3,19 @@ import dotenv from 'dotenv'
 dotenv.config();
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-// import encrypt from "mongoose-encryption";  //level 2 encryption
-// import md5 from 'md5'
-import ejs from 'ejs'
-// import bcrypt from 'bcrypt'
 import session from 'express-session'
 import passport from 'passport'
 import passportLocalMongoose from 'passport-local-mongoose'
 import {Strategy as GoogleStrategy} from 'passport-google-oauth20'
 import findOrCreate from 'mongoose-findorcreate'
-const saltRounds = 10;
+// import encrypt from "mongoose-encryption";  //level 2 encryption
+// import md5 from 'md5'
+// import ejs from 'ejs'
+// import bcrypt from 'bcrypt'
+// const saltRounds = 10;
+
 const app = express();
+
 
 app.use(express.static('public')); // for rendering dynamic pages
 app.set('view engine','ejs');
@@ -118,7 +120,7 @@ app.get('/auth/google/secrets',
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/secrets');
-  });
+});
 ///////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////
@@ -155,7 +157,7 @@ app.route('/login')
         passport.authenticate('local')(req, res, () => {
             res.redirect('/secrets');
          })
-      })
+    })
 });
 ///////////////////////////////////////////////////////////////////////////
 
@@ -185,7 +187,7 @@ app.route('/register')
      passport.authenticate('local')(req, res, () => {
         res.redirect('/secrets')
      })
-   } )
+   })
 });
 ///////////////////////////////////////////////////////////////////////////
 
